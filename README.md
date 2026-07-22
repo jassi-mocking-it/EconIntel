@@ -1,2 +1,2 @@
 # EconIntel
-AI-powered macroeconomic intelligence platform for economic forecasting, risk analysis, and scenario simulation.
+EconIntel is an AI-powered macroeconomic intelligence platform that ingests global economic indicators, engineers financial features, estimates macroeconomic stress, forecasts future conditions using machine learning, and explains every prediction through an interactive dashboard
