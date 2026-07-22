@@ -38,4 +38,13 @@ def build_master_dataset():
 
     master.sort_values("date", inplace=True)
 
+    processed_dir = os.path.join(BASE_DIR, "data", "processed")
+    os.makedirs(processed_dir, exist_ok=True)
+
+    output_path = os.path.join(processed_dir, "merged_macro_data.csv")
+
+    master.to_csv(output_path, index=False)
+
+    print(f"\n✅ Saved merged dataset to:\n{output_path}")
+
     return master
