@@ -3,6 +3,12 @@ from services.fred_service import get_series
 from services.data_service import save_to_csv
 from services.merge_service import build_master_dataset
 from services.preprocessing_service import save_feature_dataset
+from services.label_service import create_crisis_labels
+from services.target_service import create_prediction_targets
+from services.stress_service import (
+    calculate_stress_index,
+    save_stress_dataset,
+)
 from services.preprocessing_service import (
     load_dataset,
     inspect_missing_values,
@@ -74,3 +80,54 @@ print(feature_df.columns)
 print("\nMissing After Feature Engineering:")
 print(feature_df.isna().sum())
 print("\nTotal Features:", len(feature_df.columns))
+
+# --------------------------------
+# Economic Stress Index
+# --------------------------------
+
+stress_df = calculate_stress_index(feature_df)
+
+print("\nFirst 5 Stress Scores:")
+print(
+    stress_df[
+        [
+            "date",
+            "ECON_STRESS",
+        ]
+    ].head()
+)
+# ----------------------------
+# Crisis Labels
+# ----------------------------
+stress_df = create_crisis_labels(stress_df)
+print("\nFirst Crisis Labels:")
+
+print(
+    stress_df[
+        [
+            "date",
+            "ECON_STRESS",
+            "CRISIS",
+            "CRISIS_NAME"
+        ]
+    ].tail(30)
+)
+# ----------------------------
+# Prediction Targets
+# ----------------------------
+
+dataset = create_prediction_targets(stress_df)
+
+print("\n🎯 First Prediction Targets:")
+
+print(
+    dataset[
+        [
+            "date",
+            "ECON_STRESS",
+            "TARGET_STRESS_3M",
+            "CRISIS",
+            "TARGET_CRISIS_3M"
+        ]
+    ].tail(10)
+)
