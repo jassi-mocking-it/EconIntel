@@ -4,7 +4,8 @@ from services.data_service import save_to_csv
 from services.merge_service import build_master_dataset
 from services.preprocessing_service import save_feature_dataset
 from services.label_service import create_crisis_labels
-from services.target_service import create_prediction_targets
+from services.target_service import create_training_dataset
+from services.model_service import run_model_benchmark
 from services.stress_service import (
     calculate_stress_index,
     save_stress_dataset,
@@ -112,22 +113,23 @@ print(
         ]
     ].tail(30)
 )
-# ----------------------------
-# Prediction Targets
-# ----------------------------
+# -------------------------------
+# ML Dataset
+# -------------------------------
 
-dataset = create_prediction_targets(stress_df)
+training_df = create_training_dataset(stress_df)
 
-print("\n🎯 First Prediction Targets:")
+print("\nTraining Dataset")
 
-print(
-    dataset[
-        [
-            "date",
-            "ECON_STRESS",
-            "TARGET_STRESS_3M",
-            "CRISIS",
-            "TARGET_CRISIS_3M"
-        ]
-    ].tail(10)
-)
+print(training_df[
+    [
+        "date",
+        "ECON_STRESS",
+        "TARGET_STRESS_3M"
+    ]
+].head(10))
+
+# --------------------------
+# Train AI Model
+# --------------------------
+comparison = run_model_benchmark(training_df)

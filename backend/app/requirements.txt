@@ -2,6 +2,7 @@ certifi==2026.7.22
 charset-normalizer==3.4.9
 idna==3.18
 joblib==1.5.3
+lightgbm==4.7.0
 narwhals==2.24.0
 numpy==2.5.1
 pandas==3.0.3
@@ -13,3 +14,4 @@ scipy==1.18.0
 six==1.17.0
 threadpoolctl==3.6.0
 urllib3==2.7.0
+xgboost==3.3.0

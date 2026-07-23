@@ -1,21 +1,22 @@
 import pandas as pd
 
 
-def create_prediction_targets(df):
+def create_training_dataset(df):
     """
-    Create future prediction targets.
+    Create ML-ready dataset by predicting
+    future economic stress.
     """
 
-    print("\n🎯 Creating prediction targets...")
+    print("\n🧠 Preparing ML dataset...")
 
-    df = df.copy()
+    data = df.copy()
 
-    # Predict stress 3 months ahead
-    df["TARGET_STRESS_3M"] = df["ECON_STRESS"].shift(-3)
+    # Target = Stress Index 3 months ahead
+    data["TARGET_STRESS_3M"] = data["ECON_STRESS"].shift(-3)
 
-    # Binary crisis prediction
-    df["TARGET_CRISIS_3M"] = df["CRISIS"].shift(-3)
+    # Remove rows where future target doesn't exist
+    data = data.dropna(subset=["TARGET_STRESS_3M"])
 
-    print("✅ Prediction targets created!")
+    print("✅ Training dataset created!")
 
-    return df
+    return data
