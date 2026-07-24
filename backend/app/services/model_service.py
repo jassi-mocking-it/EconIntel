@@ -24,6 +24,10 @@ EXCLUDED_COLUMNS = [
     "TARGET_CRISIS_3M",
     "CRISIS",
     "CRISIS_NAME",
+
+    # Internal stress-calculation column.
+    # ECON_STRESS is the readable 0–100 version.
+    "RAW_ECON_STRESS",
 ]
 
 

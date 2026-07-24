@@ -1,135 +1,349 @@
+from config.indicators import INDICATORS
+
+from services.data_service import save_to_csv
 from services.feature_service import create_features
 from services.fred_service import get_series
-from services.data_service import save_to_csv
-from services.merge_service import build_master_dataset
-from services.preprocessing_service import save_feature_dataset
 from services.label_service import create_crisis_labels
-from services.target_service import create_training_dataset
-from services.model_service import run_model_benchmark
+from services.merge_service import build_master_dataset
+from services.feature_audit_service import (
+    run_feature_audit,
+)
+from services.explainability_service import (
+    explain_latest_risk,
+)
+from services.final_risk_service import (
+    train_and_save_final_risk_model,
+)
+from services.boosted_validation_service import (
+    run_boosted_model_validation,
+)
+from services.threshold_service import (
+    tune_probability_threshold,
+)
+from services.risk_validation_service import (
+    run_classifier_walk_forward,
+)
+from services.risk_model_service import (
+    run_risk_classification_benchmark,
+)
+from services.preprocessing_service import (
+    clean_dataset,
+    inspect_missing_values,
+    load_dataset,
+    save_clean_dataset,
+    save_feature_dataset,
+)
 from services.stress_service import (
     calculate_stress_index,
     save_stress_dataset,
 )
-from services.preprocessing_service import (
-    load_dataset,
-    inspect_missing_values,
+from services.target_service import create_prediction_targets
+from services.training_service import create_training_dataset
+from services.curated_model_service import (
+    run_curated_feature_comparison,
 )
-
-from config.indicators import INDICATORS
-
-print(" EconIntel Data Pipeline Started\n")
-
-# -----------------------------
-# Download all indicators
-# -----------------------------
-for series_id, column_name in INDICATORS.items():
-    print(f"Downloading {column_name}...")
-
-    data = get_series(series_id)
-
-    save_to_csv(data, series_id)
-
-# -----------------------------
-# Merge datasets
-# -----------------------------
-master = build_master_dataset()
-
-print("\nMerged Dataset:")
-print(master.head())
-
-print("\nShape:", master.shape)
-
-# -----------------------------
-# Load processed dataset
-# -----------------------------
-dataset = load_dataset()
-
-print("\nFirst 5 rows:")
-print(dataset.head())
-
-# -----------------------------
-# Missing values
-# -----------------------------
-inspect_missing_values(dataset)
-from services.preprocessing_service import (
-    clean_dataset,
-    save_clean_dataset,
+from services.regularized_model_service import (
+    run_regularized_model_comparison,
 )
+# We will re-enable these after inspecting the new targets.
+# from services.model_service import run_model_benchmark
+# from services.validation_service import run_walk_forward_validation
 
-clean_df = clean_dataset(dataset)
 
-print("\nFirst 5 cleaned rows:")
-print(clean_df.head())
+def main():
+    """
+    Run the complete EconIntel data and target-generation pipeline.
+    """
 
-print("\nRemaining Missing Values:")
-print(clean_df.isna().sum())
+    print("\n🚀 EconIntel Data Pipeline Started\n")
 
-save_clean_dataset(clean_df)
-# -----------------------------------
-# Feature Engineering
-# -----------------------------------
+    # =========================================================
+    # 1. Download FRED indicators
+    # =========================================================
 
-feature_df = create_features(clean_df)
-save_feature_dataset(feature_df)
+    print("=" * 60)
+    print("1. DOWNLOADING ECONOMIC INDICATORS")
+    print("=" * 60)
 
-print("\n📊 Engineered Dataset:")
-print(feature_df.head())
+    for series_id, column_name in INDICATORS.items():
+        print(f"\nDownloading {column_name}...")
 
-print("\nColumns:")
-print(feature_df.columns)
+        observations = get_series(series_id)
 
-print("\nMissing After Feature Engineering:")
-print(feature_df.isna().sum())
-print("\nTotal Features:", len(feature_df.columns))
+        save_to_csv(
+            observations,
+            series_id,
+        )
 
-# --------------------------------
-# Economic Stress Index
-# --------------------------------
+    # =========================================================
+    # 2. Merge raw indicator datasets
+    # =========================================================
 
-stress_df = calculate_stress_index(feature_df)
+    print("\n" + "=" * 60)
+    print("2. MERGING DATASETS")
+    print("=" * 60)
 
-print("\nFirst 5 Stress Scores:")
-print(
-    stress_df[
-        [
-            "date",
-            "ECON_STRESS",
+    merged_df = build_master_dataset()
+
+    print("\nMerged dataset:")
+    print(merged_df.head())
+
+    print("\nMerged shape:")
+    print(merged_df.shape)
+
+    # =========================================================
+    # 3. Load merged dataset
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("3. LOADING MERGED DATASET")
+    print("=" * 60)
+
+    dataset = load_dataset()
+
+    print("\nFirst 5 merged rows:")
+    print(dataset.head())
+
+    inspect_missing_values(dataset)
+
+    # =========================================================
+    # 4. Clean and convert to monthly frequency
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("4. CLEANING AND MONTHLY ALIGNMENT")
+    print("=" * 60)
+
+    dataset = clean_dataset(dataset)
+
+    print("\nFirst 5 cleaned monthly rows:")
+    print(dataset.head())
+
+    print("\nRemaining missing values:")
+    print(dataset.isna().sum())
+
+    save_clean_dataset(dataset)
+
+    # =========================================================
+    # 5. Feature engineering
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("5. FEATURE ENGINEERING")
+    print("=" * 60)
+
+    dataset = create_features(dataset)
+
+    save_feature_dataset(dataset)
+
+    print("\nEngineered dataset:")
+    print(dataset.head())
+
+    print("\nFeature columns:")
+    print(dataset.columns)
+
+    print("\nMissing values after feature engineering:")
+    print(dataset.isna().sum())
+
+    print(f"\nTotal columns: {len(dataset.columns)}")
+
+    # =========================================================
+    # 6. Causal Economic Stress Index
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("6. ECONOMIC STRESS INDEX")
+    print("=" * 60)
+
+    dataset = calculate_stress_index(dataset)
+
+    save_stress_dataset(dataset)
+
+    print("\nFirst valid stress scores:")
+
+    print(
+        dataset[
+            [
+                "date",
+                "ECON_STRESS",
+            ]
         ]
-    ].head()
-)
-# ----------------------------
-# Crisis Labels
-# ----------------------------
-stress_df = create_crisis_labels(stress_df)
-print("\nFirst Crisis Labels:")
+        .dropna()
+        .head(10)
+    )
 
-print(
-    stress_df[
-        [
-            "date",
-            "ECON_STRESS",
-            "CRISIS",
-            "CRISIS_NAME"
+    # =========================================================
+    # 7. Historical crisis labels
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("7. HISTORICAL CRISIS LABELS")
+    print("=" * 60)
+
+    dataset = create_crisis_labels(dataset)
+
+    print("\nSample crisis-labelled rows:")
+
+    print(
+        dataset[
+            [
+                "date",
+                "ECON_STRESS",
+                "CRISIS",
+                "CRISIS_NAME",
+            ]
         ]
-    ].tail(30)
-)
-# -------------------------------
-# ML Dataset
-# -------------------------------
+        .dropna(subset=["ECON_STRESS"])
+        .tail(15)
+    )
 
-training_df = create_training_dataset(stress_df)
+    # =========================================================
+    # 8. Three-month early-warning targets
+    # =========================================================
 
-print("\nTraining Dataset")
+    print("\n" + "=" * 60)
+    print("8. THREE-MONTH EARLY-WARNING TARGETS")
+    print("=" * 60)
 
-print(training_df[
-    [
-        "date",
-        "ECON_STRESS",
-        "TARGET_STRESS_3M"
-    ]
-].head(10))
+    dataset = create_prediction_targets(dataset)
 
-# --------------------------
-# Train AI Model
-# --------------------------
-comparison = run_model_benchmark(training_df)
+    print("\nSample prediction targets:")
+
+    print(
+        dataset[
+            [
+                "date",
+                "ECON_STRESS",
+                "TARGET_STRESS_3M",
+                "TARGET_STRESS_CHANGE_3M",
+                "TARGET_RISK_RISING_3M",
+                "CRISIS",
+                "TARGET_CRISIS_3M",
+            ]
+        ]
+        .dropna(subset=["ECON_STRESS"])
+        .tail(15)
+    )
+
+    # =========================================================
+    # 9. Prepare ML dataset
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("9. PREPARING ML DATASET")
+    print("=" * 60)
+
+    training_df = create_training_dataset(dataset)
+
+    print("\nTraining dataset sample:")
+
+    print(
+        training_df[
+            [
+                "date",
+                "ECON_STRESS",
+                "TARGET_STRESS_3M",
+                "TARGET_STRESS_CHANGE_3M",
+                "TARGET_RISK_RISING_3M",
+            ]
+        ].head(10)
+    )
+
+    # =========================================================
+    # 10. Rising-risk classification
+    # =========================================================
+
+    risk_comparison = (
+        run_risk_classification_benchmark(
+            training_df
+        )
+    )
+
+    # =========================================================
+    # 11. Classification walk-forward validation
+    # =========================================================
+
+    risk_fold_results, risk_validation_summary = (
+        run_classifier_walk_forward(
+            training_df,
+            n_splits=5,
+        )
+    )
+
+    # =========================================================
+    # 12. Probability-threshold tuning
+    # =========================================================
+
+    (
+        threshold_results,
+        best_threshold,
+        threshold_predictions,
+    ) = tune_probability_threshold(
+        training_df,
+        n_splits=5,
+    )
+    
+    print(
+        f"\nSelected EconIntel warning threshold: "
+        f"{best_threshold:.2f}"
+    )
+    
+    boosted_fold_results, boosted_summary = (run_boosted_model_validation
+    (
+        training_df,
+        n_splits=5,
+        threshold=best_threshold,
+        )
+    )
+    # =========================================================
+    # 13. XGBoost and boosted-model benchmark
+    # =========================================================
+
+    final_model_bundle, latest_risk_assessment = (
+        train_and_save_final_risk_model(
+            training_df=training_df,
+            full_feature_df=dataset,
+            warning_threshold=best_threshold,
+        )
+    )
+    # =========================================================
+    # 15. Explain latest risk prediction
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("15. LATEST-RISK EXPLAINABILITY")
+    print("=" * 60)
+
+    latest_risk_explanation = explain_latest_risk(
+        full_feature_df=dataset,
+        model_bundle=final_model_bundle,
+        top_n=8,
+    )
+
+    feature_audit_results = run_feature_audit(
+        training_df,
+        correlation_threshold=0.90,
+    )
+    (
+        curated_fold_results,
+        curated_feature_summary,
+    ) = run_curated_feature_comparison(
+        training_df,
+        threshold=best_threshold,
+        n_splits=5,
+    )
+    (
+        regularized_fold_results,
+        regularized_model_summary,
+    ) = run_regularized_model_comparison(
+        training_df,
+        threshold=best_threshold,
+        n_splits=5,
+    )
+    print("\n" + "=" * 60)
+    print("✅ ECONINTEL EARLY-WARNING PIPELINE COMPLETED")
+    print("=" * 60)
+
+if __name__ == "__main__":
+
+    main()

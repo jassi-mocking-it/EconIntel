@@ -3,115 +3,164 @@ import pandas as pd
 
 def create_features(df):
     """
-    Create engineered macroeconomic features.
+    Create EconIntel's macroeconomic forecasting features.
+
+    The input dataset must contain one row per month.
     """
 
-    print("\n Creating engineered features...")
+    print("\n📊 Creating engineered features...")
 
-    # -----------------------------
-    # Interest Rate Features
-    # -----------------------------
+    data = df.copy()
 
-    df["FED_CHANGE"] = df["FEDFUNDS"].diff()
+    data["date"] = pd.to_datetime(data["date"])
+    data = data.sort_values("date").reset_index(drop=True)
 
-    # -----------------------------
-    # Inflation Features
-    # -----------------------------
+    # Ensure macroeconomic columns are numeric.
+    numeric_columns = [
+        "FEDFUNDS",
+        "UNRATE",
+        "CPI",
+        "GDP",
+        "TREASURY",
+        "VIX",
+    ]
 
-    df["INFLATION_RATE"] = df["CPI"].pct_change() * 100
+    for column in numeric_columns:
+        data[column] = pd.to_numeric(
+            data[column],
+            errors="coerce",
+        )
 
-    # -----------------------------
-    # GDP Growth
-    # -----------------------------
+    # =================================================
+    # 1. Monthly changes
+    # =================================================
 
-    df["GDP_GROWTH"] = df["GDP"].pct_change() * 100
+    data["FED_CHANGE"] = data["FEDFUNDS"].diff()
 
-    # -----------------------------
-    # Treasury Change
-    # -----------------------------
+    data["TREASURY_CHANGE"] = data["TREASURY"].diff()
 
-    df["TREASURY_CHANGE"] = df["TREASURY"].diff()
+    data["VIX_CHANGE"] = data["VIX"].diff()
 
-    # -----------------------------
-    # VIX Change
-    # -----------------------------
+    data["UNRATE_CHANGE"] = data["UNRATE"].diff()
 
-    df["VIX_CHANGE"] = df["VIX"].diff()
+    # =================================================
+    # 2. Year-over-year macroeconomic growth
+    # =================================================
 
-    # -----------------------------
-    # Unemployment Change
-    # -----------------------------
+    # CPI percentage change compared with 12 months earlier.
+    data["INFLATION_RATE"] = (
+        data["CPI"].pct_change(
+            periods=12,
+            fill_method=None,
+        )
+        * 100
+    )
 
-    df["UNRATE_CHANGE"] = df["UNRATE"].diff()
+    # GDP percentage change compared with 12 months earlier.
+    data["GDP_GROWTH"] = (
+        data["GDP"].pct_change(
+            periods=12,
+            fill_method=None,
+        )
+        * 100
+    )
 
-    # -----------------------------
-# Rolling Averages
-# -----------------------------
+    # =================================================
+    # 3. Rolling averages
+    # =================================================
 
-    df["FED_3M_AVG"] = df["FEDFUNDS"].rolling(window=3).mean()
-    df["FED_6M_AVG"] = df["FEDFUNDS"].rolling(window=6).mean()
+    data["FED_3M_AVG"] = (
+        data["FEDFUNDS"]
+        .rolling(window=3)
+        .mean()
+    )
 
-    df["CPI_3M_AVG"] = df["CPI"].rolling(window=3).mean()
+    data["FED_6M_AVG"] = (
+        data["FEDFUNDS"]
+        .rolling(window=6)
+        .mean()
+    )
 
-    df["VIX_3M_AVG"] = df["VIX"].rolling(window=3).mean()
+    data["CPI_3M_AVG"] = (
+        data["CPI"]
+        .rolling(window=3)
+        .mean()
+    )
 
-    df["UNRATE_3M_AVG"] = df["UNRATE"].rolling(window=3).mean()
-    # -----------------------------
-# Lag Features
-# -----------------------------
+    data["GDP_3M_AVG"] = (
+        data["GDP"]
+        .rolling(window=3)
+        .mean()
+    )
 
-    df["FED_LAG1"] = df["FEDFUNDS"].shift(1)
+    data["UNRATE_3M_AVG"] = (
+        data["UNRATE"]
+        .rolling(window=3)
+        .mean()
+    )
 
-    df["GDP_LAG1"] = df["GDP"].shift(1)
+    data["VIX_3M_AVG"] = (
+        data["VIX"]
+        .rolling(window=3)
+        .mean()
+    )
 
-    df["UNRATE_LAG1"] = df["UNRATE"].shift(1)
+    # =================================================
+    # 4. Lag features
+    # =================================================
 
-    df["VIX_LAG1"] = df["VIX"].shift(1)
+    data["FED_LAG1"] = data["FEDFUNDS"].shift(1)
 
+    data["GDP_LAG1"] = data["GDP"].shift(1)
 
-# ------------------------------------
-# Rolling Averages
-# ------------------------------------
+    data["CPI_LAG1"] = data["CPI"].shift(1)
 
-    df["FED_3M_AVG"] = df["FEDFUNDS"].rolling(3).mean()
-    df["FED_6M_AVG"] = df["FEDFUNDS"].rolling(6).mean()
+    data["UNRATE_LAG1"] = data["UNRATE"].shift(1)
 
-    df["GDP_3M_AVG"] = df["GDP"].rolling(3).mean()
+    data["TREASURY_LAG1"] = data["TREASURY"].shift(1)
 
-    df["CPI_3M_AVG"] = df["CPI"].rolling(3).mean()
+    data["VIX_LAG1"] = data["VIX"].shift(1)
 
-    df["UNRATE_3M_AVG"] = df["UNRATE"].rolling(3).mean()
+    # =================================================
+    # 5. Six-month volatility
+    # =================================================
 
-    df["VIX_3M_AVG"] = df["VIX"].rolling(3).mean()
+    data["VIX_VOLATILITY"] = (
+        data["VIX"]
+        .rolling(window=6)
+        .std()
+    )
 
-# ------------------------------------
-# Lag Features
-# ------------------------------------
+    data["FED_VOLATILITY"] = (
+        data["FEDFUNDS"]
+        .rolling(window=6)
+        .std()
+    )
 
-    df["FED_LAG1"] = df["FEDFUNDS"].shift(1)
-    df["GDP_LAG1"] = df["GDP"].shift(1)
-    df["CPI_LAG1"] = df["CPI"].shift(1)
-    df["UNRATE_LAG1"] = df["UNRATE"].shift(1)
-    df["TREASURY_LAG1"] = df["TREASURY"].shift(1)
-    df["VIX_LAG1"] = df["VIX"].shift(1)
+    # =================================================
+    # 6. Momentum
+    # =================================================
 
-    # ------------------------------------
-# Rolling Standard Deviation
-# ------------------------------------
+    data["FED_MOMENTUM"] = (
+        data["FEDFUNDS"]
+        - data["FED_3M_AVG"]
+    )
 
-    df["VIX_VOLATILITY"] = df["VIX"].rolling(6).std()
+    data["GDP_MOMENTUM"] = (
+        data["GDP"]
+        - data["GDP_3M_AVG"]
+    )
 
-    df["FED_VOLATILITY"] = df["FEDFUNDS"].rolling(6).std()
-    # ------------------------------------
-# Momentum Features
-# ------------------------------------
+    data["UNRATE_MOMENTUM"] = (
+        data["UNRATE"]
+        - data["UNRATE_3M_AVG"]
+    )
 
-    df["FED_MOMENTUM"] = df["FEDFUNDS"] - df["FED_3M_AVG"]
+    data["VIX_MOMENTUM"] = (
+        data["VIX"]
+        - data["VIX_3M_AVG"]
+    )
 
-    df["GDP_MOMENTUM"] = df["GDP"] - df["GDP_3M_AVG"]
-
-    df["UNRATE_MOMENTUM"] = df["UNRATE"] - df["UNRATE_3M_AVG"]
-
-    df["VIX_MOMENTUM"] = df["VIX"] - df["VIX_3M_AVG"]
-    return df
     print("✅ Features created!")
+
+    return data

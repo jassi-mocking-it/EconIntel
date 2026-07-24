@@ -1,0 +1,272 @@
+{
+    "observation_date": "2026-07-01",
+    "model_name": "Logistic Regression",
+    "forecast_horizon_months": 3,
+    "risk_probability": 0.11330834473421285,
+    "warning_threshold": 0.35,
+    "warning_active": false,
+    "top_contributions": [
+        {
+            "feature": "GDP_GROWTH",
+            "group": "Economic Growth",
+            "value": 2.4686260642837743,
+            "shap_value": -1.5784588909555224,
+            "absolute_shap": 1.5784588909555224
+        },
+        {
+            "feature": "Z_UNRATE",
+            "group": "Labour Market",
+            "value": -0.8366976046910986,
+            "shap_value": -0.7315509940835436,
+            "absolute_shap": 0.7315509940835436
+        },
+        {
+            "feature": "UNRATE_LAG1",
+            "group": "Labour Market",
+            "value": 4.2,
+            "shap_value": 0.5492614328780929,
+            "absolute_shap": 0.5492614328780929
+        },
+        {
+            "feature": "Z_FEDFUNDS",
+            "group": "Monetary Policy",
+            "value": 0.31752993921338557,
+            "shap_value": 0.548809935063039,
+            "absolute_shap": 0.548809935063039
+        },
+        {
+            "feature": "INFLATION_RATE",
+            "group": "Inflation",
+            "value": 3.227809007073934,
+            "shap_value": -0.517415207523562,
+            "absolute_shap": 0.517415207523562
+        },
+        {
+            "feature": "UNRATE",
+            "group": "Labour Market",
+            "value": 4.2,
+            "shap_value": 0.5068687384336173,
+            "absolute_shap": 0.5068687384336173
+        },
+        {
+            "feature": "ECON_STRESS",
+            "group": "Stress Dynamics",
+            "value": 51.502766475451295,
+            "shap_value": 0.3728352275005019,
+            "absolute_shap": 0.3728352275005019
+        },
+        {
+            "feature": "UNRATE_3M_AVG",
+            "group": "Labour Market",
+            "value": 4.2333333333333325,
+            "shap_value": 0.3698635099491407,
+            "absolute_shap": 0.3698635099491407
+        }
+    ],
+    "increasing_risk": [
+        {
+            "feature": "UNRATE_LAG1",
+            "group": "Labour Market",
+            "value": 4.2,
+            "shap_value": 0.5492614328780929,
+            "absolute_shap": 0.5492614328780929
+        },
+        {
+            "feature": "Z_FEDFUNDS",
+            "group": "Monetary Policy",
+            "value": 0.31752993921338557,
+            "shap_value": 0.548809935063039,
+            "absolute_shap": 0.548809935063039
+        },
+        {
+            "feature": "UNRATE",
+            "group": "Labour Market",
+            "value": 4.2,
+            "shap_value": 0.5068687384336173,
+            "absolute_shap": 0.5068687384336173
+        },
+        {
+            "feature": "ECON_STRESS",
+            "group": "Stress Dynamics",
+            "value": 51.502766475451295,
+            "shap_value": 0.3728352275005019,
+            "absolute_shap": 0.3728352275005019
+        },
+        {
+            "feature": "UNRATE_3M_AVG",
+            "group": "Labour Market",
+            "value": 4.2333333333333325,
+            "shap_value": 0.3698635099491407,
+            "absolute_shap": 0.3698635099491407
+        },
+        {
+            "feature": "TREASURY_LAG1",
+            "group": "Treasury Conditions",
+            "value": 4.47047619047619,
+            "shap_value": 0.26100853926931433,
+            "absolute_shap": 0.26100853926931433
+        },
+        {
+            "feature": "TREASURY",
+            "group": "Treasury Conditions",
+            "value": 4.562,
+            "shap_value": 0.2535506381760123,
+            "absolute_shap": 0.2535506381760123
+        },
+        {
+            "feature": "Z_VIX",
+            "group": "Market Volatility",
+            "value": -0.37365403566952315,
+            "shap_value": 0.17502046130436805,
+            "absolute_shap": 0.17502046130436805
+        }
+    ],
+    "reducing_risk": [
+        {
+            "feature": "GDP_GROWTH",
+            "group": "Economic Growth",
+            "value": 2.4686260642837743,
+            "shap_value": -1.5784588909555224,
+            "absolute_shap": 1.5784588909555224
+        },
+        {
+            "feature": "Z_UNRATE",
+            "group": "Labour Market",
+            "value": -0.8366976046910986,
+            "shap_value": -0.7315509940835436,
+            "absolute_shap": 0.7315509940835436
+        },
+        {
+            "feature": "INFLATION_RATE",
+            "group": "Inflation",
+            "value": 3.227809007073934,
+            "shap_value": -0.517415207523562,
+            "absolute_shap": 0.517415207523562
+        },
+        {
+            "feature": "GDP_LAG1",
+            "group": "Economic Growth",
+            "value": 31865.721,
+            "shap_value": -0.2895110007251995,
+            "absolute_shap": 0.2895110007251995
+        },
+        {
+            "feature": "FEDFUNDS",
+            "group": "Monetary Policy",
+            "value": 3.63,
+            "shap_value": -0.2875276998117853,
+            "absolute_shap": 0.2875276998117853
+        },
+        {
+            "feature": "FED_LAG1",
+            "group": "Monetary Policy",
+            "value": 3.63,
+            "shap_value": -0.277590589620995,
+            "absolute_shap": 0.277590589620995
+        },
+        {
+            "feature": "FED_3M_AVG",
+            "group": "Monetary Policy",
+            "value": 3.63,
+            "shap_value": -0.25153437811571083,
+            "absolute_shap": 0.25153437811571083
+        },
+        {
+            "feature": "CPI_LAG1",
+            "group": "Inflation",
+            "value": 332.568,
+            "shap_value": -0.1847254275208023,
+            "absolute_shap": 0.1847254275208023
+        }
+    ],
+    "grouped_contributions": [
+        {
+            "group": "Economic Growth",
+            "shap_value": -2.0995651034752725,
+            "absolute_shap": 2.360860899551686,
+            "feature_count": 6
+        },
+        {
+            "group": "Labour Market",
+            "shap_value": 0.7738283105936695,
+            "absolute_shap": 2.2524632162608498,
+            "feature_count": 6
+        },
+        {
+            "group": "Monetary Policy",
+            "shap_value": -0.27728770762214283,
+            "absolute_shap": 1.6597086112109767,
+            "feature_count": 8
+        },
+        {
+            "group": "Inflation",
+            "shap_value": -0.8554573905465566,
+            "absolute_shap": 0.9116225490219364,
+            "feature_count": 5
+        },
+        {
+            "group": "Stress Dynamics",
+            "shap_value": 0.6292240913556599,
+            "absolute_shap": 0.7777989879394781,
+            "feature_count": 7
+        },
+        {
+            "group": "Market Volatility",
+            "shap_value": 0.10515328045182974,
+            "absolute_shap": 0.6675551111228472,
+            "feature_count": 7
+        },
+        {
+            "group": "Treasury Conditions",
+            "shap_value": 0.4436590990442514,
+            "absolute_shap": 0.5854592558464019,
+            "feature_count": 3
+        }
+    ],
+    "grouped_increasing_risk": [
+        {
+            "group": "Labour Market",
+            "shap_value": 0.7738283105936695,
+            "absolute_shap": 2.2524632162608498,
+            "feature_count": 6
+        },
+        {
+            "group": "Stress Dynamics",
+            "shap_value": 0.6292240913556599,
+            "absolute_shap": 0.7777989879394781,
+            "feature_count": 7
+        },
+        {
+            "group": "Treasury Conditions",
+            "shap_value": 0.4436590990442514,
+            "absolute_shap": 0.5854592558464019,
+            "feature_count": 3
+        },
+        {
+            "group": "Market Volatility",
+            "shap_value": 0.10515328045182974,
+            "absolute_shap": 0.6675551111228472,
+            "feature_count": 7
+        }
+    ],
+    "grouped_reducing_risk": [
+        {
+            "group": "Economic Growth",
+            "shap_value": -2.0995651034752725,
+            "absolute_shap": 2.360860899551686,
+            "feature_count": 6
+        },
+        {
+            "group": "Inflation",
+            "shap_value": -0.8554573905465566,
+            "absolute_shap": 0.9116225490219364,
+            "feature_count": 5
+        },
+        {
+            "group": "Monetary Policy",
+            "shap_value": -0.27728770762214283,
+            "absolute_shap": 1.6597086112109767,
+            "feature_count": 8
+        }
+    ]
+}
