@@ -2,7 +2,7 @@
     "observation_date": "2026-07-01",
     "model_name": "Logistic Regression",
     "forecast_horizon_months": 3,
-    "risk_probability": 0.11330834473421285,
+    "risk_probability": 0.11275983148887693,
     "warning_threshold": 0.35,
     "warning_active": false,
     "top_contributions": [
@@ -109,9 +109,9 @@
         {
             "feature": "TREASURY",
             "group": "Treasury Conditions",
-            "value": 4.562,
-            "shap_value": 0.2535506381760123,
-            "absolute_shap": 0.2535506381760123
+            "value": 4.57125,
+            "shap_value": 0.25477623599997845,
+            "absolute_shap": 0.25477623599997845
         },
         {
             "feature": "Z_VIX",
@@ -218,8 +218,8 @@
         },
         {
             "group": "Treasury Conditions",
-            "shap_value": 0.4436590990442514,
-            "absolute_shap": 0.5854592558464019,
+            "shap_value": 0.4381880386055484,
+            "absolute_shap": 0.5933815119330372,
             "feature_count": 3
         }
     ],
@@ -238,8 +238,8 @@
         },
         {
             "group": "Treasury Conditions",
-            "shap_value": 0.4436590990442514,
-            "absolute_shap": 0.5854592558464019,
+            "shap_value": 0.4381880386055484,
+            "absolute_shap": 0.5933815119330372,
             "feature_count": 3
         },
         {

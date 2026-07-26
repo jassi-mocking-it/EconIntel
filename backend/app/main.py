@@ -5,6 +5,9 @@ from services.feature_service import create_features
 from services.fred_service import get_series
 from services.label_service import create_crisis_labels
 from services.merge_service import build_master_dataset
+from services.production_inference_service import (
+    create_production_risk_snapshot,
+)
 from services.feature_audit_service import (
     run_feature_audit,
 )
@@ -339,6 +342,25 @@ def main():
         training_df,
         threshold=best_threshold,
         n_splits=5,
+    )
+
+    # =========================================================
+    # 16. Create production API snapshot
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("16. PRODUCTION RISK SNAPSHOT")
+    print("=" * 60)
+
+    production_risk_snapshot = (
+        create_production_risk_snapshot(
+            latest_risk_assessment=(
+                latest_risk_assessment
+            ),
+            latest_risk_explanation=(
+                latest_risk_explanation
+            ),
+        )
     )
     print("\n" + "=" * 60)
     print("✅ ECONINTEL EARLY-WARNING PIPELINE COMPLETED")

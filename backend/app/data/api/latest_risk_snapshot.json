@@ -1,0 +1,147 @@
+{
+    "status": "success",
+    "generated_at_utc": "2026-07-26T16:11:18.370501+00:00",
+    "assessment": {
+        "observation_date": "2026-07-01",
+        "current_stress": 51.502766475451295,
+        "risk_probability": 0.11275983148887693,
+        "risk_probability_percent": 11.3,
+        "warning_threshold": 0.35,
+        "warning_threshold_percent": 35.0,
+        "warning_active": false,
+        "warning_level": "Low",
+        "forecast_horizon_months": 3
+    },
+    "drivers": {
+        "categories_increasing_risk": [
+            {
+                "category": "Labour Market",
+                "contribution": 0.7738283105936695,
+                "feature_count": 6
+            },
+            {
+                "category": "Stress Dynamics",
+                "contribution": 0.6292240913556599,
+                "feature_count": 7
+            },
+            {
+                "category": "Treasury Conditions",
+                "contribution": 0.4381880386055484,
+                "feature_count": 3
+            },
+            {
+                "category": "Market Volatility",
+                "contribution": 0.10515328045182974,
+                "feature_count": 7
+            }
+        ],
+        "categories_reducing_risk": [
+            {
+                "category": "Economic Growth",
+                "contribution": -2.0995651034752725,
+                "feature_count": 6
+            },
+            {
+                "category": "Inflation",
+                "contribution": -0.8554573905465566,
+                "feature_count": 5
+            },
+            {
+                "category": "Monetary Policy",
+                "contribution": -0.27728770762214283,
+                "feature_count": 8
+            }
+        ],
+        "features_increasing_risk": [
+            {
+                "feature": "UNRATE_LAG1",
+                "category": "Labour Market",
+                "value": 4.2,
+                "contribution": 0.5492614328780929
+            },
+            {
+                "feature": "Z_FEDFUNDS",
+                "category": "Monetary Policy",
+                "value": 0.31752993921338557,
+                "contribution": 0.548809935063039
+            },
+            {
+                "feature": "UNRATE",
+                "category": "Labour Market",
+                "value": 4.2,
+                "contribution": 0.5068687384336173
+            },
+            {
+                "feature": "ECON_STRESS",
+                "category": "Stress Dynamics",
+                "value": 51.502766475451295,
+                "contribution": 0.3728352275005019
+            },
+            {
+                "feature": "UNRATE_3M_AVG",
+                "category": "Labour Market",
+                "value": 4.2333333333333325,
+                "contribution": 0.3698635099491407
+            }
+        ],
+        "features_reducing_risk": [
+            {
+                "feature": "GDP_GROWTH",
+                "category": "Economic Growth",
+                "value": 2.4686260642837743,
+                "contribution": -1.5784588909555224
+            },
+            {
+                "feature": "Z_UNRATE",
+                "category": "Labour Market",
+                "value": -0.8366976046910986,
+                "contribution": -0.7315509940835436
+            },
+            {
+                "feature": "INFLATION_RATE",
+                "category": "Inflation",
+                "value": 3.227809007073934,
+                "contribution": -0.517415207523562
+            },
+            {
+                "feature": "GDP_LAG1",
+                "category": "Economic Growth",
+                "value": 31865.721,
+                "contribution": -0.2895110007251995
+            },
+            {
+                "feature": "FEDFUNDS",
+                "category": "Monetary Policy",
+                "value": 3.63,
+                "contribution": -0.2875276998117853
+            }
+        ]
+    },
+    "model": {
+        "name": "Logistic Regression",
+        "penalty": "L2",
+        "regularization_c": 1.0,
+        "feature_count": 42,
+        "target": "Economic stress increases by at least five points within three months.",
+        "forecast_horizon_months": 3,
+        "decision_threshold": 0.35,
+        "validation": {
+            "method": "Five-fold chronological walk-forward validation",
+            "average_precision": 0.234,
+            "average_recall": 0.843,
+            "average_f1": 0.347,
+            "average_pr_auc": 0.308,
+            "average_roc_auc": 0.569
+        }
+    },
+    "interpretation": {
+        "summary": "EconIntel estimates a 11.3% probability that economic stress will rise by at least five points within the next three months.",
+        "warning_message": "The warning threshold has not been reached."
+    },
+    "limitations": [
+        "This is an experimental early-warning model, not financial advice.",
+        "The probability has not yet undergone formal probability calibration.",
+        "SHAP values describe model contributions and do not prove economic causation.",
+        "The current U.S. model produces a relatively high number of false alarms."
+    ]
+}
