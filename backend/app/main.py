@@ -5,6 +5,9 @@ from services.feature_service import create_features
 from services.fred_service import get_series
 from services.label_service import create_crisis_labels
 from services.merge_service import build_master_dataset
+from services.historical_snapshot_service import (
+    create_us_stress_history_snapshot,
+)
 from services.production_inference_service import (
     create_production_risk_snapshot,
 )
@@ -365,6 +368,19 @@ def main():
     print("\n" + "=" * 60)
     print("✅ ECONINTEL EARLY-WARNING PIPELINE COMPLETED")
     print("=" * 60)
+        # =========================================================
+    # 17. Create historical stress snapshot
+    # =========================================================
+
+    print("\n" + "=" * 60)
+    print("17. HISTORICAL STRESS SNAPSHOT")
+    print("=" * 60)
+
+    us_stress_history_snapshot = (
+        create_us_stress_history_snapshot(
+            full_feature_df=dataset,
+        )
+    )
 
 if __name__ == "__main__":
 

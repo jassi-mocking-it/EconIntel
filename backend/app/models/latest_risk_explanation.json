@@ -2,7 +2,7 @@
     "observation_date": "2026-07-01",
     "model_name": "Logistic Regression",
     "forecast_horizon_months": 3,
-    "risk_probability": 0.11275983148887693,
+    "risk_probability": 0.11306386594088357,
     "warning_threshold": 0.35,
     "warning_active": false,
     "top_contributions": [
@@ -51,9 +51,9 @@
         {
             "feature": "ECON_STRESS",
             "group": "Stress Dynamics",
-            "value": 51.502766475451295,
-            "shap_value": 0.3728352275005019,
-            "absolute_shap": 0.3728352275005019
+            "value": 51.55576222043798,
+            "shap_value": 0.37670718624682675,
+            "absolute_shap": 0.37670718624682675
         },
         {
             "feature": "UNRATE_3M_AVG",
@@ -88,9 +88,9 @@
         {
             "feature": "ECON_STRESS",
             "group": "Stress Dynamics",
-            "value": 51.502766475451295,
-            "shap_value": 0.3728352275005019,
-            "absolute_shap": 0.3728352275005019
+            "value": 51.55576222043798,
+            "shap_value": 0.37670718624682675,
+            "absolute_shap": 0.37670718624682675
         },
         {
             "feature": "UNRATE_3M_AVG",
@@ -116,9 +116,9 @@
         {
             "feature": "Z_VIX",
             "group": "Market Volatility",
-            "value": -0.37365403566952315,
-            "shap_value": 0.17502046130436805,
-            "absolute_shap": 0.17502046130436805
+            "value": -0.3595086031940503,
+            "shap_value": 0.16672720461021218,
+            "absolute_shap": 0.16672720461021218
         }
     ],
     "reducing_risk": [
@@ -206,14 +206,14 @@
         },
         {
             "group": "Stress Dynamics",
-            "shap_value": 0.6292240913556599,
-            "absolute_shap": 0.7777989879394781,
+            "shap_value": 0.6372878517347208,
+            "absolute_shap": 0.7876619962885932,
             "feature_count": 7
         },
         {
             "group": "Market Volatility",
-            "shap_value": 0.10515328045182974,
-            "absolute_shap": 0.6675551111228472,
+            "shap_value": 0.1001249257044186,
+            "absolute_shap": 0.6303220480706134,
             "feature_count": 7
         },
         {
@@ -232,8 +232,8 @@
         },
         {
             "group": "Stress Dynamics",
-            "shap_value": 0.6292240913556599,
-            "absolute_shap": 0.7777989879394781,
+            "shap_value": 0.6372878517347208,
+            "absolute_shap": 0.7876619962885932,
             "feature_count": 7
         },
         {
@@ -244,8 +244,8 @@
         },
         {
             "group": "Market Volatility",
-            "shap_value": 0.10515328045182974,
-            "absolute_shap": 0.6675551111228472,
+            "shap_value": 0.1001249257044186,
+            "absolute_shap": 0.6303220480706134,
             "feature_count": 7
         }
     ],

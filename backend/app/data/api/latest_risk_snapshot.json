@@ -1,10 +1,10 @@
 {
     "status": "success",
-    "generated_at_utc": "2026-07-26T16:11:18.370501+00:00",
+    "generated_at_utc": "2026-07-27T15:48:39.071857+00:00",
     "assessment": {
         "observation_date": "2026-07-01",
-        "current_stress": 51.502766475451295,
-        "risk_probability": 0.11275983148887693,
+        "current_stress": 51.55576222043798,
+        "risk_probability": 0.11306386594088357,
         "risk_probability_percent": 11.3,
         "warning_threshold": 0.35,
         "warning_threshold_percent": 35.0,
@@ -21,7 +21,7 @@
             },
             {
                 "category": "Stress Dynamics",
-                "contribution": 0.6292240913556599,
+                "contribution": 0.6372878517347208,
                 "feature_count": 7
             },
             {
@@ -31,7 +31,7 @@
             },
             {
                 "category": "Market Volatility",
-                "contribution": 0.10515328045182974,
+                "contribution": 0.1001249257044186,
                 "feature_count": 7
             }
         ],
@@ -74,8 +74,8 @@
             {
                 "feature": "ECON_STRESS",
                 "category": "Stress Dynamics",
-                "value": 51.502766475451295,
-                "contribution": 0.3728352275005019
+                "value": 51.55576222043798,
+                "contribution": 0.37670718624682675
             },
             {
                 "feature": "UNRATE_3M_AVG",
