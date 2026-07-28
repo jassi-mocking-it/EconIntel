@@ -29,8 +29,11 @@ import {
   YAxis,
 } from "recharts";
 
+import CrisisReplay from "./components/CrisisReplay";
+
 import { getDashboardData } from "./services/api";
 import "./App.css";
+
 
 
 function formatNumber(value, digits = 1) {
@@ -350,6 +353,45 @@ function getVisibleSeries(series, range) {
   });
 }
 
+function getCrisisReplaySeries(
+  series,
+  crisis,
+) {
+  if (
+    !Array.isArray(series) ||
+    series.length === 0 ||
+    !crisis
+  ) {
+    return [];
+  }
+
+  const replayStart = new Date(
+    `${crisis.start_date}T00:00:00Z`,
+  );
+
+  const replayEnd = new Date(
+    `${crisis.end_date}T00:00:00Z`,
+  );
+
+  replayStart.setUTCMonth(
+    replayStart.getUTCMonth() - 12,
+  );
+
+  replayEnd.setUTCMonth(
+    replayEnd.getUTCMonth() + 6,
+  );
+
+  return series.filter((record) => {
+    const recordDate = new Date(
+      `${record.date}T00:00:00Z`,
+    );
+
+    return (
+      recordDate >= replayStart &&
+      recordDate <= replayEnd
+    );
+  });
+}
 
 function App() {
   const [dashboard, setDashboard] =
@@ -363,6 +405,11 @@ function App() {
 
   const [range, setRange] =
     useState("10Y");
+  
+  const [
+  selectedCrisis,
+  setSelectedCrisis,
+  ] = useState(null);
 
 
   const loadDashboard = useCallback(
@@ -416,35 +463,54 @@ useEffect(() => {
   };
 }, []);
 
-  const visibleSeries = useMemo(() => {
-    const series =
-      dashboard?.history?.series || [];
+const visibleSeries = useMemo(() => {
+  const series =
+    dashboard?.history?.series || [];
 
-    return getVisibleSeries(
+  if (selectedCrisis) {
+    return getCrisisReplaySeries(
       series,
-      range,
+      selectedCrisis,
     );
-  }, [dashboard, range]);
+  }
+
+  return getVisibleSeries(
+    series,
+    range,
+  );
+}, [
+  dashboard,
+  range,
+  selectedCrisis,
+]);
 
 
-  const visibleCrises = useMemo(() => {
-    const crisisPeriods =
-      dashboard?.history?.crisis_periods ||
-      [];
+const visibleCrises = useMemo(() => {
+  if (selectedCrisis) {
+    return [selectedCrisis];
+  }
 
-    if (visibleSeries.length === 0) {
-      return [];
-    }
+  const crisisPeriods =
+    dashboard?.history?.crisis_periods ||
+    [];
 
-    const firstVisibleDate =
-      visibleSeries[0].date;
+  if (visibleSeries.length === 0) {
+    return [];
+  }
 
-    return crisisPeriods.filter(
-      (period) =>
-        period.end_date >=
-        firstVisibleDate,
-    );
-  }, [dashboard, visibleSeries]);
+  const firstVisibleDate =
+    visibleSeries[0].date;
+
+  return crisisPeriods.filter(
+    (period) =>
+      period.end_date >=
+      firstVisibleDate,
+  );
+}, [
+  dashboard,
+  visibleSeries,
+  selectedCrisis,
+]);
 
 
   if (loading && !dashboard) {
@@ -707,6 +773,18 @@ useEffect(() => {
           />
         </section>
 
+<CrisisReplay
+  crisisPeriods={
+    dashboard.history?.crisis_periods
+  }
+  selectedCrisis={selectedCrisis}
+  onSelect={(crisis) => {
+    setSelectedCrisis(crisis);
+  }}
+  onReset={() => {
+    setSelectedCrisis(null);
+  }}
+/>
 
         <section className="panel chart-panel">
           <div className="panel-heading chart-heading">
@@ -736,9 +814,10 @@ useEffect(() => {
                         : ""
                     }
                     key={rangeOption}
-                    onClick={() =>
-                      setRange(rangeOption)
-                    }
+                    onClick={() => {
+                      setRange(rangeOption);
+                      setSelectedCrisis(null);
+                    }}
                     type="button"
                   >
                     {rangeOption}
