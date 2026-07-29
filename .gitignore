@@ -3,4 +3,4 @@
 __pycache__/
 *.pyc
 data/raw/
-data/processed/
+data/processed/data/global/raw/

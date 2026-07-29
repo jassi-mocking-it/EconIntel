@@ -1,0 +1,61 @@
+country_code,country,indicator,valid_values,missing_values,coverage_percentage
+USA,United States,external_debt_gni,0,26,0.0
+ARG,Argentina,inflation,7,19,26.923076923076923
+LKA,Sri Lanka,trade_gdp,21,5,80.76923076923077
+LKA,Sri Lanka,official_exchange_rate,24,2,92.3076923076923
+ARG,Argentina,external_debt_gni,25,1,96.15384615384616
+EGY,Egypt,external_debt_gni,25,1,96.15384615384616
+IND,India,external_debt_gni,25,1,96.15384615384616
+LKA,Sri Lanka,current_account_gdp,25,1,96.15384615384616
+LKA,Sri Lanka,external_debt_gni,25,1,96.15384615384616
+LKA,Sri Lanka,fdi_inflows_gdp,25,1,96.15384615384616
+LKA,Sri Lanka,reserves_months_imports,25,1,96.15384615384616
+PAK,Pakistan,external_debt_gni,25,1,96.15384615384616
+USA,United States,inflation,25,1,96.15384615384616
+USA,United States,trade_gdp,25,1,96.15384615384616
+ARG,Argentina,current_account_gdp,26,0,100.0
+ARG,Argentina,fdi_inflows_gdp,26,0,100.0
+ARG,Argentina,gdp_growth,26,0,100.0
+ARG,Argentina,gdp_per_capita_usd,26,0,100.0
+ARG,Argentina,official_exchange_rate,26,0,100.0
+ARG,Argentina,reserves_months_imports,26,0,100.0
+ARG,Argentina,trade_gdp,26,0,100.0
+ARG,Argentina,unemployment,26,0,100.0
+EGY,Egypt,current_account_gdp,26,0,100.0
+EGY,Egypt,fdi_inflows_gdp,26,0,100.0
+EGY,Egypt,gdp_growth,26,0,100.0
+EGY,Egypt,gdp_per_capita_usd,26,0,100.0
+EGY,Egypt,inflation,26,0,100.0
+EGY,Egypt,official_exchange_rate,26,0,100.0
+EGY,Egypt,reserves_months_imports,26,0,100.0
+EGY,Egypt,trade_gdp,26,0,100.0
+EGY,Egypt,unemployment,26,0,100.0
+IND,India,current_account_gdp,26,0,100.0
+IND,India,fdi_inflows_gdp,26,0,100.0
+IND,India,gdp_growth,26,0,100.0
+IND,India,gdp_per_capita_usd,26,0,100.0
+IND,India,inflation,26,0,100.0
+IND,India,official_exchange_rate,26,0,100.0
+IND,India,reserves_months_imports,26,0,100.0
+IND,India,trade_gdp,26,0,100.0
+IND,India,unemployment,26,0,100.0
+LKA,Sri Lanka,gdp_growth,26,0,100.0
+LKA,Sri Lanka,gdp_per_capita_usd,26,0,100.0
+LKA,Sri Lanka,inflation,26,0,100.0
+LKA,Sri Lanka,unemployment,26,0,100.0
+PAK,Pakistan,current_account_gdp,26,0,100.0
+PAK,Pakistan,fdi_inflows_gdp,26,0,100.0
+PAK,Pakistan,gdp_growth,26,0,100.0
+PAK,Pakistan,gdp_per_capita_usd,26,0,100.0
+PAK,Pakistan,inflation,26,0,100.0
+PAK,Pakistan,official_exchange_rate,26,0,100.0
+PAK,Pakistan,reserves_months_imports,26,0,100.0
+PAK,Pakistan,trade_gdp,26,0,100.0
+PAK,Pakistan,unemployment,26,0,100.0
+USA,United States,current_account_gdp,26,0,100.0
+USA,United States,fdi_inflows_gdp,26,0,100.0
+USA,United States,gdp_growth,26,0,100.0
+USA,United States,gdp_per_capita_usd,26,0,100.0
+USA,United States,official_exchange_rate,26,0,100.0
+USA,United States,reserves_months_imports,26,0,100.0
+USA,United States,unemployment,26,0,100.0
